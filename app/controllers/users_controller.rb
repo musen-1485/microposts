@@ -7,6 +7,7 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @pagy, @microposts = pagy(@user.microposts.order(id: :desc))
+    @micropost = current_user.microposts.build  # form_with 用
   end
 
   def new
@@ -29,7 +30,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @pagy, @followings = pagy(@user.followings)
     counts(@user)
-  end
+   end
 
   def followers
     @user = User.find(params[:id])
