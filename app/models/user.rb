@@ -31,20 +31,20 @@ class User < ApplicationRecord
         Micropost.where(user_id: self.following_ids + [self.id])
     end
     
-    has_many :favorites
-    has_many :favorite_microposts, through: :favorites, source: :micropost
+    has_many :favorites, dependent: :destroy 
+    has_many :already_favorited, through: :favorites, source: :micropost
     
-    def favorite(micropost) #投稿をお気に入りに追加するメソッド
-        self.favorites.find_or_create_by(micropost_id: micropost.id) #micropost_idを取得し、登録する。
+    def favorite(micropost)
+        self.favorites.find_or_create_by(micropost_id: micropost.id)
     end
     
-    def unfavorite(micropost) #投稿のお気に入りを外すメソッド。
-        favorite = self.favorites.find_by(micropost_id: micropost.id) #favoriteにmicropost_idを取得する動作を代入する。
-        favorite.destroy if favorite #取得したmicropost_idを消す。
+    def unfavorite(micropost)
+        favorite = self.favorites.find_by(micropost_id: micropost.id)
+        favorite.destroy if favorite
     end
     
-    def favorite_microposts?(micropost)
-        self.favorite_microposts.include?(micropost)
+    def already_favorited?(micropost)
+        self.already_favorited.include?(micropost)
     end
-   
+    
 end
