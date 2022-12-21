@@ -12,10 +12,10 @@ Rails.application.routes.draw do
     get :followers
     end
   end
-  
+
+ resources :microposts, only: [:index,:create, :destroy] 
+ post 'favorite/:id' => 'favorites#create', as: 'create_favorite'
+ delete 'favorite/:id' => 'favorites#destroy', as: 'destroy_favorite'
  
- 
- resources :microposts, only: [:create, :destroy] 
  resources :relationships, only: [:create, :destroy]
- resources :favorites, only: [:create, :destroy]
 end

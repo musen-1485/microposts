@@ -13,8 +13,12 @@
           <div>
             <% if current_user == micropost.user %>
               <%= link_to "Delete", micropost, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger btn-sm' %>
+              <% end %>
+            <% if current_user.already_favorited?(micropost) %>
+              <%= link_to "Unfavorite", destroy_favorite_path(micropost.id), method: :delete,class: 'btn btn-danger btn-sm' %>
+            <% else %>
+              <%= link_to "favorite", create_favorite_path(micropost.id), method: :post,class: 'btn btn-primary btn-sm' %>
             <% end %>
-             <%= render 'favorites/favorite_button', micropost: @micropost %>
           </div>
         </div>
       </li>

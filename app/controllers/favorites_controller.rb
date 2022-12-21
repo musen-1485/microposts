@@ -1,15 +1,19 @@
 class FavoritesController < ApplicationController
- def create
-    micropost = Micropost.find(params[:micropost_id])
-    current_user.favorite(micropost)
-    flash[:success] = 'お気に入りに追加'
-    redirect_back(fallback_location: root_path)
- end
+  before_action :require_user_logged_in
+
+  def create
+    Favorite.create(user_id: current_user.id, micropost_id: params[:id])
+    flash[:success] = "お気に入りに追加しました。"
+    redirect_to root_path
+  end
 
   def destroy
-    micropost = Micropost.find(params[:micropost_id])
-    current_user.unfavorite(micropost)
-    flash[:success] = 'お気に入りを外す。'
-    redirect_back(fallback_location: root_path)
+    favorite = Favorite.find_by(user_id: current_user.id, micropost_id: params[:id])
+    favorite.destroy
+    flash[:success] = "お気に入りから外す"
+    redirect_to root_path
   end
+  
+ 
+  
 end

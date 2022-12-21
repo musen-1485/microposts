@@ -2,13 +2,14 @@ class UsersController < ApplicationController
   before_action :require_user_logged_in, only: [:index, :show, :followings, :followers]
   def index
     @pagy, @users = pagy(User.order(id: :desc), items: 25)
-    
   end
 
   def show
     @user = User.find(params[:id])
     @pagy, @microposts = pagy(@user.microposts.order(id: :desc))
+    counts(@user)
     @micropost = current_user.microposts.build  # form_with 用
+    
    
   end
 
