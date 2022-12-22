@@ -33,6 +33,7 @@ class User < ApplicationRecord
     
     has_many :favorites
     has_many :already_favorited, through: :favorites, source: :micropost
+    has_many :likes, through: :favorites, source: :micropost
     
     def favorite(micropost)
         self.favorites.find_or_create_by(micropost_id: micropost.id)
